@@ -8,14 +8,14 @@ module.exports = app => {
   app.use(passport.session())
 
   // 設定登入認證
-  passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
     User.findOne({ email })
       .then((user) => {
         if (!user) {
-          return done(null, false, { message: 'you must register!' })
+          return done(null, false, req.flash('warning_msg', 'you must register!'))
         }
         if (user.password !== password) {
-          return done(null, false, { message: 'Email or password is incorrect!' })
+          return done(null, false, req.flash('warning_msg', 'Email or password is incorrect!'))
         }
         return done(null, user)
       })
