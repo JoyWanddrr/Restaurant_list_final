@@ -6,7 +6,7 @@ const session = require('express-session')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
+const port = process.env.PORT
 
 const usePassport = require('./config/passport')
 
@@ -18,7 +18,7 @@ const app = express()
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
@@ -43,6 +43,6 @@ app.use((req, res, next) => {
 
 app.use(routes)
 
-app.listen(3000, () => {
-  console.log('express now is listening on prot 3000.')
+app.listen(port, () => {
+  console.log(`express now is listening on port ${port}.`)
 })
