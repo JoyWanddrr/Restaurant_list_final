@@ -3,12 +3,11 @@
 const express = require('express')
 const router = express.Router()
 // 載入restaurants的schema
-const Restaurant = require('./../../models/restaurant')
+const Restaurant = require('../../models/restaurant')
 
 router.get('/', (req, res) => {
   Restaurant.find()
     .lean()
-    // 測試餐廳資料長度，為0則可以requrie seed
     .then(restaurants => {
       res.render('index', { restaurants })
     })

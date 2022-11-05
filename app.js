@@ -31,6 +31,14 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 usePassport(app)
+// 使用 app.use 代表這組 middleware 會作用於所有的路由。設定本地變數 res.locals:所有樣板都可以使用的變數。
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  console.log(req.user)
+  next()
+})
+
 app.use(routes)
 
 app.listen(3000, () => {
