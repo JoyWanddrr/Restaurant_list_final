@@ -1,8 +1,9 @@
 // 使用者資料庫格式
 
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   name: {
     type: String,
     required: true

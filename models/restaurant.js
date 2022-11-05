@@ -1,8 +1,9 @@
 // 餐廳清單所使用的schema架構，每筆資料輸出到資料庫都有固定框架。
 // _id會自動產生
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const restSchema = new mongoose.Schema({
+const restSchema = new Schema({
   name: {
     type: String, // 資料型別是字串
     required: true // 這是個必填欄位
@@ -38,6 +39,13 @@ const restSchema = new mongoose.Schema({
   },
   description: {
     type: String,
+    required: true
+  },
+  // 加入關聯設定
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
     required: true
   }
 })

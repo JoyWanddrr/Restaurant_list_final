@@ -3,9 +3,8 @@
 const express = require('express')
 const router = express.Router()
 // 載入restaurants的schema
-const Restaurant = require('./../../models/restaurant')
+const Restaurant = require('../../models/restaurant')
 
-// 將重複的路由路徑restaurants取出，放在總路由
 
 // 新增餐廳
 router.get('/new', (req, res) => {
@@ -14,28 +13,32 @@ router.get('/new', (req, res) => {
 
 // 接住新增餐廳的路由
 router.post('/', (req, res) => {
-  Restaurant.create(req.body)
+  const userId = req.user._id
+  // req.body必須展開，才可以帶入schema
+  return Restaurant.create({ ...req.body, userId })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
 
 
-// detail/show，注意，因為是由資料庫匯入，所以都要用Restaurant
+// detail/show
 router.get('/:id', (req, res) => {
-  const id = req.params.id
-  return Restaurant.findById(id)
-    // 撇除Mongoose的處理，才能render
+  const userId = req.user._id
+  // 使用_id是因為使用fineOne不會自動轉換
+  const _id = req.params.id
+  return Restaurant.findOne({ _id, userId })
     .lean()
-    // 將拿到的資料放入show.hbs渲染
     .then(restaurant => res.render('show', { restaurant }))
     .catch(error => console.log(error))
+
 })
 
 
 // edit
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
-  Restaurant.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
     .catch(error => console.log(error))
@@ -43,11 +46,10 @@ router.get('/:id/edit', (req, res) => {
 
 // 設定edit接住的路由。
 router.put('/:id', (req, res) => {
-  const id = req.params.id
-  // 1.查詢資料
-  // findByIdAndUpdate(id, update, options, callback)，可直接查找ID並修改整組資料上傳
-  return Restaurant.findByIdAndUpdate(id, req.body)
-    // 這裡需要Mongoose的function，所以不用Lean()移除格式。成功後重新導向detail頁面
+  const _id = req.params.id
+  const userId = req.user._id
+
+  return Restaurant.findByIdAndUpdate({ _id, userId }, req.body)
     .then((restaurant) => res.redirect(`/restaurants/${id}`))
     .catch(err => console.log(err))
 })
@@ -55,8 +57,9 @@ router.put('/:id', (req, res) => {
 
 // delete
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  return Restaurant.findById(id)
+  const _id = req.params.id
+  const userId = req.user._id
+  Restaurant.findOne({ _id, userId })
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))

@@ -6,7 +6,8 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 router.get('/', (req, res) => {
-  Restaurant.find()
+  // const userId = req.user._id
+  Restaurant.find(req.params.id)
     .lean()
     .then(restaurants => {
       res.render('index', { restaurants })
