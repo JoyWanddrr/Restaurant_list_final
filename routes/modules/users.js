@@ -1,6 +1,7 @@
 // 使用者登入、註冊等相關頁面
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
 const User = require('./../../models/user')
 
 
@@ -9,10 +10,11 @@ router.get('/login', (req, res) => {
   res.render('login')
 })
 
-// 取得登入
-router.post('/login', (req, res) => {
-
-})
+// 取得登入，加入 middleware，驗證 request 登入狀態
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/users/login'
+}))
 
 // 註冊介面
 router.get('/register', (req, res) => {
