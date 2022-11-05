@@ -9,10 +9,13 @@ const router = express.Router()
 const home = require('./modules/home')
 // 引入restaurants模組(router)
 const restaurants = require('./modules/restaurants')
-// 將網址結構符合 / 字串的 request 導向 home 模組(如果request路徑是'/',就執行home的程式碼) 。此為首頁路由。最後再放入app.js使用。
+const users = require('./modules/users')
+
+
 router.use('/', home)
 // restaurants路由
 router.use('/restaurants', restaurants)
+router.use('/users', users)
 
 
 
