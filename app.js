@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 
 if (process.env.NODE_ENV !== 'production') {
@@ -18,6 +19,12 @@ const app = express()
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 // 啟動樣板引擎hbs
 app.set('view engine', 'hbs')
+
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 // 設定 Express 路由以提供靜態檔案
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
