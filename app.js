@@ -1,5 +1,9 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const methodOverride = require('method-override')
 // 引用路由器
 const routes = require('./routes')
