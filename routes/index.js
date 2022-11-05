@@ -10,13 +10,15 @@ const home = require('./modules/home')
 // 引入restaurants模組(router)
 const restaurants = require('./modules/restaurants')
 const users = require('./modules/users')
+// 掛載 middleware，確保登入才能使用
+const { authenticator } = require('../middleware/auth')
 
 
-router.use('/', home)
+
 // restaurants路由
-router.use('/restaurants', restaurants)
+router.use('/restaurants', authenticator, restaurants)
 router.use('/users', users)
-
+router.use('/', authenticator, home)
 
 
 // 匯出路由器

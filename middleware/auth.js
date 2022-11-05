@@ -1,0 +1,11 @@
+//登入驗證的middleware，確保使用者必須先登入，才能使用網站功能
+
+module.exports = {
+  authenticator: (req, res, next) => {
+    // req.isAuthenticated() 是 Passport.js 提供的函式，會根據 request 的登入狀態回傳 true 或 false。
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    res.redirect('/users/login')
+  }
+}
