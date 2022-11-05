@@ -19,7 +19,7 @@ module.exports = app => {
         }
         return done(null, user)
       })
-      .catch(err = console.log(err))
+      .catch(err => done(err, false))
   }))
 
   // 設定序列化與反序列化
@@ -29,6 +29,6 @@ module.exports = app => {
   passport.deserializeUser((id, done) => {
     User.findById(id)
       .then(user => done(null, user))
-      .catch(err => console.log(err))
+      .catch(err => done(err, null))
   })
 }

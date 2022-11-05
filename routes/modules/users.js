@@ -46,4 +46,11 @@ router.post('/register', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// 登出(use POST or DELETE)
+router.post('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
+})
+
+
 module.exports = router

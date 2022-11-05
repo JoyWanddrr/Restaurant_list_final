@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/stylesheets/bootstrap.css">
   {{!-- 若是沒有設定 Express 路由提供靜態檔案，會導致main.css載入失敗 --}}
   <link rel="stylesheet" href="/stylesheets/main.css">
-  <title>restaurant CRUD</title>
+  <title>My Favorite Restaurant-List</title>
 </head>
 
 <body>
@@ -30,6 +30,9 @@
           <i class="fa-solid fa-plus"></i>新增餐廳</a>
         {{!-- -------------------------------------------------------------------------- --}}
       </div>
+      <form action="/users/logout" method="POST">
+        <button class=" btn btn-outline-dark" type="submit" name="button">Logout</button>
+      </form>
     </nav>
 
     <div class="banner"></div>
