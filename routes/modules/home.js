@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 
 
 // 搜尋特定餐廳
+// 尚未做出限定使用者資料的查詢以及警告訊息。
 router.get('/search', (req, res) => {
   // 擷取input
   const keywords = req.query.keyword.trim()
@@ -25,7 +26,7 @@ router.get('/search', (req, res) => {
   if (!keywords) {
     return res.redirect('/')
   }
-  Restaurant.find()
+  return Restaurant.find({})
     .lean()
     .then(restaurants => {
       const filterRestaurant = restaurants.filter(

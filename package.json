@@ -1,5 +1,5 @@
 {
-  "name": "2-3.a8.restaurant_list-refactoring",
+  "name": "restaurant_list_final",
   "version": "1.0.0",
   "description": "讓使用者可以瀏覽餐廳資料、並修改、新增。",
   "main": "app.js",
