@@ -1,20 +1,47 @@
 // 種子資料腳本，並且以指令執行腳本，建立種子資料。
 
-// 重構mongoose連線設定，從mongoose.js 匯出的db，在這裡取得。require為執行mongoose.js。
+const bcrypt = require('bcryptjs')
+// 載入環境變數
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const db = require('./../../config/mongoose')
-
-// 載入 restaurant model
 const Restaurant = require('../restaurant')
-// 載入restaurant.json
 const restaurantList = require('./restaurant.json').results
+const User = require('../../models/user')
+const userList = require('./seedUser.json').users
 
-// export的db用在這裡。
+
 db.once('open', () => {
-  // 想的太複雜了，直接把results提取放入就可以
-  Restaurant.create(restaurantList)
-    .then(() => {
-      console.log('restaurantSeeder done!')
-      // db.close()
+  console.log('start seeding')
+  // 先將資料載完，再進入後面程序
+  Promise.all(
+    userList.map(user => {
+      const { name, email, password, ownRestaurants } = user
+      // hashSync(data, salt)
+      return User.create({ name, email, password: bcrypt.hashSync(password, bcrypt.genSaltSync(10)) })
+        .then(user => {
+          // 載入餐廳json，用map展開，並將user.id綁定
+          const restaurants = ownRestaurants.map(index => {
+            // restaurantList[index]:每個餐廳的位置(user1擁有restaurant.json的第0,1,2號位置。)
+            const ownRestaurant = restaurantList[index]
+            // 綁定userId
+            ownRestaurant.userId = user._id
+            // 回傳已綁訂好id的餐廳
+            return ownRestaurant
+          })
+          // 將餐廳資料推到資料庫
+          return Restaurant.insertMany(restaurants)
+        })
     })
-    .catch(err => console.error(err))
+  )
+    .then(() => {
+      console.log('Seeds done!')
+      db.close()
+    })
+    .catch(error => console.log(error))
+    // 不加finally，程序會跳太快，直接關掉。
+    .finally(() => process.exit())
+
 })
