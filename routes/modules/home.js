@@ -18,15 +18,11 @@ router.get('/', (req, res) => {
 
 
 // 搜尋特定餐廳
-// 尚未做出限定使用者資料的查詢以及警告訊息。
 router.get('/search', (req, res) => {
-  // 擷取input
+  const userId = req.user._id
   const keywords = req.query.keyword.trim()
-  // 如果查詢不到則返回首頁
-  if (!keywords) {
-    return res.redirect('/')
-  }
-  return Restaurant.find({})
+
+  Restaurant.find({ userId })
     .lean()
     .then(restaurants => {
       const filterRestaurant = restaurants.filter(
@@ -34,6 +30,7 @@ router.get('/search', (req, res) => {
           data.name.toLowerCase().includes(keywords) ||
           data.category.includes(keywords)
       )
+      // 想新增查詢不到的警告。
       res.render('index', { restaurants: filterRestaurant, keywords })
     })
     .catch(err => console.error(err))
