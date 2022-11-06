@@ -77,16 +77,16 @@
 * Node.js 16.17.1
 * Express 4.17.1
 * Express-Handlebars 4.0.2
-* Express-session 1.17.1
+* Express-Session 1.17.1
 * Mongoose 5.9.7
 * Bootstrap 4.1.3
-* Font-awesome 6.2.0
+* Font-Awesome 6.2.0
 * Nodemon 2.0.20
-* Method-override 3.0.0
+* Method-Override 3.0.0
 * Bcryptjs 2.4.3
-* Connect-flash 0.1.1
-* Dotenv ^8.2.0
+* Connect-Flash 0.1.1
+* Dotenv 8.2.0
 * Passport 0.4.1
-* Passport-facebook 3.0.0
-* Passport-local 1.0.0
+* Passport-Facebook 3.0.0
+* Passport-Local 1.0.0
 
