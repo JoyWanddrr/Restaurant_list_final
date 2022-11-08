@@ -50,7 +50,7 @@ router.put('/:id', (req, res) => {
   const userId = req.user._id
 
   return Restaurant.findByIdAndUpdate({ _id, userId }, req.body)
-    .then((restaurant) => res.redirect(`/restaurants/${id}`))
+    .then((restaurant) => res.redirect(`/restaurants/${_id}`))
     .catch(err => console.log(err))
 })
 
