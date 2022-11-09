@@ -1,6 +1,6 @@
 const passport = require('passport')
-const User = require('../models/user')
 const LocalStrategy = require('passport-local').Strategy
+const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const FacebookStrategy = require('passport-facebook').Strategy
 
@@ -12,7 +12,7 @@ module.exports = app => {
   // 設定登入認證
   passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
     User.findOne({ email })
-      .then((user) => {
+      .then(user => {
         if (!user) {
           return done(null, false, req.flash('warning_msg', 'you must register!'))
         }

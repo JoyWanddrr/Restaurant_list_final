@@ -14,7 +14,7 @@ router.get('/login', (req, res) => {
 // 取得登入，加入 middleware，驗證 request 登入狀態
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/users/login'
+  failureRedirect: '/users/login',
 }))
 
 // 註冊介面

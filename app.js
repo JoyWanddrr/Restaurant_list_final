@@ -3,18 +3,19 @@ const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
 const session = require('express-session')
+const usePassport = require('./config/passport')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const port = process.env.PORT
 
-const usePassport = require('./config/passport')
+
 
 // 引用路由器
 const routes = require('./routes')
 require('./config/mongoose')
-
 const app = express()
+
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 
 app.use(session({
@@ -39,6 +40,7 @@ app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
   next()
+
 })
 
 app.use(routes)
